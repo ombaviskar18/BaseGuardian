@@ -15,9 +15,11 @@
     "bot:webhook": "node server/telegramBot.js",
     "dev:all": "concurrently \"npm run bot --prefix .\" \"npm run dev --prefix ./frontend\"",
     "build": "npm run build --prefix ./frontend",
-    "deploy": "npm run build && vercel --prod",
+    "build:api": "cd api && npm install",
+    "build:all": "npm run build:api && npm run build",
+    "deploy": "npm run build:all && vercel --prod",
     "deploy:dev": "vercel",
-    "vercel-build": "npm run build --prefix ./frontend"
+    "vercel-build": "npm run build:all"
   },
   "keywords": [],
   "author": "",
