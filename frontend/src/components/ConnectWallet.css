@@ -1,0 +1,6 @@
+.header-connect-wallet-button {
+  min-width: 140px; /* smaller button */
+  padding: 0.5rem 0.875rem;
+  font-size: 0.9rem;
+  line-height: 1;
+}

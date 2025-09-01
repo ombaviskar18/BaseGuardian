@@ -1,0 +1,135 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
+
+contract BaseSocialAnalysis {
+    // Payment required for each analysis (0.01 ETH on Base Sepolia)
+    uint256 public constant ANALYSIS_PAYMENT = 0.01 ether;
+    
+    // Events
+    event SocialAnalysisRequested(address indexed user, string projectName, uint256 payment);
+    event SocialAnalysisCompleted(address indexed user, string projectName, uint256 riskScore, string analysis);
+    event PaymentReceived(address indexed user, uint256 amount);
+    error Unauthorized();
+    
+    // Structs
+    struct SocialRequest {
+        address user;
+        string projectName;
+        uint256 payment;
+        bool completed;
+        uint256 riskScore;
+        string analysis;
+        uint256 timestamp;
+    }
+    
+    // State variables
+    mapping(address => SocialRequest[]) public userRequests;
+    address public owner;
+    
+    modifier onlyOwner() {
+        if (msg.sender != owner) revert Unauthorized();
+        _;
+    }
+    
+    modifier requirePayment() {
+        require(msg.value >= ANALYSIS_PAYMENT, "Payment of 0.01 ETH required for each analysis");
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
+    
+    /**
+     * @dev Request social analysis - requires payment for each analysis
+     * @param projectName The project name to analyze
+     */
+    function requestSocialAnalysis(string memory projectName) external payable requirePayment {
+        require(bytes(projectName).length > 0, "Project name cannot be empty");
+        
+        // Create social analysis request
+        SocialRequest memory newRequest = SocialRequest({
+            user: msg.sender,
+            projectName: projectName,
+            payment: msg.value,
+            completed: false,
+            riskScore: 0,
+            analysis: "",
+            timestamp: block.timestamp
+        });
+        
+        userRequests[msg.sender].push(newRequest);
+        
+        emit SocialAnalysisRequested(msg.sender, projectName, msg.value);
+        emit PaymentReceived(msg.sender, msg.value);
+    }
+    
+    /**
+     * @dev Complete social analysis (called by owner/backend)
+     * @param user The user who requested the analysis
+     * @param requestIndex Index of the request in user's requests array
+     * @param riskScore The calculated risk score (0-100)
+     * @param analysis The analysis report
+     */
+    function completeAnalysis(
+        address user,
+        uint256 requestIndex,
+        uint256 riskScore,
+        string memory analysis
+    ) external onlyOwner {
+        require(requestIndex < userRequests[user].length, "Invalid request index");
+        require(!userRequests[user][requestIndex].completed, "Analysis already completed");
+        
+        userRequests[user][requestIndex].completed = true;
+        userRequests[user][requestIndex].riskScore = riskScore;
+        userRequests[user][requestIndex].analysis = analysis;
+        
+        emit SocialAnalysisCompleted(
+            user,
+            userRequests[user][requestIndex].projectName,
+            riskScore,
+            analysis
+        );
+    }
+    
+    /**
+     * @dev Get user's social analysis requests
+     * @param user The user address
+     * @return Array of social analysis requests
+     */
+    function getUserRequests(address user) external view returns (SocialRequest[] memory) {
+        return userRequests[user];
+    }
+    
+    /**
+     * @dev Withdraw accumulated payments (owner only)
+     */
+    function withdrawPayments() external onlyOwner {
+        uint256 balance = address(this).balance;
+        require(balance > 0, "No funds to withdraw");
+        
+        (bool success, ) = owner.call{value: balance}("");
+        require(success, "Withdrawal failed");
+    }
+    
+    /**
+     * @dev Get contract balance
+     */
+    function getContractBalance() external view returns (uint256) {
+        return address(this).balance;
+    }
+    
+    /**
+     * @dev Transfer ownership
+     * @param newOwner The new owner address
+     */
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "Invalid new owner");
+        owner = newOwner;
+    }
+    
+    // Allow contract to receive ETH
+    receive() external payable {
+        emit PaymentReceived(msg.sender, msg.value);
+    }
+}

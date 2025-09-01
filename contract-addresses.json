@@ -1,0 +1,14 @@
+{
+  "ContractAnalysis": "0xdb5fC412a5515033265Dc9e8d383f9C2b551c747",
+  "Tokenomics": "0xdAeB7bAc9606598f14F4382Fc3E95278ed2317db",
+  "SocialAnalysis": "0x74BAd0e70daaD1D12Fd97170aE6D65bDaE77a982",
+  "Monitoring": "0x0CeA3f0aD00C20F1824373635474c4d72a5E6B82",
+  "Gateway": "0x6c533f7fe93fae114d0954697069df33c9b74fd7",
+  "Network": {
+    "name": "BaseChain Athens 3",
+    "rpcUrl": "https://Basechain-athens-evm.blockpi.network/v1/rpc/public",
+    "chainId": 7001,
+    "currency": "aBase",
+    "explorer": "https://athens3.Basescan.io"
+  }
+}
