@@ -709,7 +709,7 @@ export function TokenomicsPage() {
                         <span className="warning-title">Wallet Connection Required</span>
                       </div>
                       <p className="warning-text">
-                        Connect your wallet and pay 0.01 ETH on Base Sepolia to perform tokenomics analysis.
+                        Connect your wallet and pay 0.0001 ETH on Base Sepolia to perform tokenomics analysis.
                       </p>
                     </motion.div>
                   )}

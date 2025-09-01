@@ -1,11 +1,11 @@
 import { ethers } from 'ethers';
 
-// Contract addresses from Base Sepolia deployment
+// Contract addresses from Base Sepolia deployment (Updated with 0.0001 ETH payment)
 export const CONTRACT_ADDRESSES = {
-  ContractAnalysis: "0xE37b17Ec40FDB5db5201F4131B9e65cAb2d27813",
-  Tokenomics: "0x0bC1183C722c6EC91a74C99B622D38aD0D9989D2",
-  SocialAnalysis: "0x08b807D3e0A55049C7cb0888320F1348fA391d4D",
-  Monitoring: "0x02bb85D2e321e0930d57B71b431E392c88d6EaFE",
+  ContractAnalysis: "0x1edBBfc2a68428A556212dF0c54263b6a251B74d",
+  Tokenomics: "0xEb470F2fc016C1770415a8d970F7cF09837c18Bc",
+  SocialAnalysis: "0x072fa2ce02EcEFDC123bAf57A369581247B5E88c",
+  Monitoring: "0xd5918c006Dc5ff19d30E988D11FAaC31f8b6ee2B",
 };
 
 // Network configuration (Base Sepolia)
@@ -66,7 +66,7 @@ export class ContractService {
       this.signer
     );
 
-    const payment = ethers.parseEther("0.01");
+    const payment = ethers.parseEther("0.0001");
     const tx = await contract.requestContractAnalysis(contractAddress, { value: payment });
     return await tx.wait();
   }
@@ -79,7 +79,7 @@ export class ContractService {
       this.signer
     );
 
-    const payment = ethers.parseEther("0.01");
+    const payment = ethers.parseEther("0.0001");
     const tx = await contract.requestTokenomicsAnalysis(tokenAddress, { value: payment });
     return await tx.wait();
   }
@@ -93,7 +93,7 @@ export class ContractService {
       this.signer
     );
 
-    const payment = ethers.parseEther("0.01");
+    const payment = ethers.parseEther("0.0001");
     const tx = await contract.requestSocialAnalysis(projectName, { value: payment });
     return await tx.wait();
   }
@@ -107,7 +107,7 @@ export class ContractService {
       this.signer
     );
 
-    const payment = ethers.parseEther("0.01");
+    const payment = ethers.parseEther("0.0001");
     const tx = await contract.requestMonitoring(targetAddress, { value: payment });
     return await tx.wait();
   }

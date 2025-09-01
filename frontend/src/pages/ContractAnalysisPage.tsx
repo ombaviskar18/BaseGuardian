@@ -484,7 +484,7 @@ export function ContractAnalysisPage() {
                         <span className="warning-title">Wallet Connection Required</span>
                       </div>
                       <p className="warning-text">
-                        Connect your wallet and pay 0.01 ETH on Base Sepolia to perform security analysis.
+                        Connect your wallet and pay 0.0001 ETH on Base Sepolia to perform security analysis.
                       </p>
                     </motion.div>
                   )}

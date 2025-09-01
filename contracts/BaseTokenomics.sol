@@ -2,8 +2,8 @@
 pragma solidity 0.8.26;
 
 contract BaseTokenomics {
-    // Payment required for each analysis (0.01 ETH on Base Sepolia)
-    uint256 public constant ANALYSIS_PAYMENT = 0.01 ether;
+    // Payment required for each analysis (0.0001 ETH on Base Sepolia)
+    uint256 public constant ANALYSIS_PAYMENT = 0.0001 ether; // Reduced to 0.0001 ETH for affordability
     
     // Events
     event TokenomicsAnalysisRequested(address indexed user, string tokenAddress, uint256 payment);
@@ -32,7 +32,7 @@ contract BaseTokenomics {
     }
     
     modifier requirePayment() {
-        require(msg.value >= ANALYSIS_PAYMENT, "Payment of 0.01 ETH required for each analysis");
+        require(msg.value >= ANALYSIS_PAYMENT, "Payment of 0.0001 ETH required for each analysis");
         _;
     }
 
